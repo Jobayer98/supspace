@@ -64,4 +64,29 @@ app.use("/api/blog-stats", async (req, res, next) => {
   }
 });
 
+// Search functionality
+app.use("/api/blog-search", async (req, res, next) => {
+  try {
+    const { privacy } = req.query;
+
+    const blogs = await fetchData();
+
+    if (!blogs) {
+      return res.status(404).json({ msg: "No blog found" });
+    }
+
+    const searchBlogs = blogs.filter((blog) =>
+      _.includes(_.toLower(blog.title), _.toLower(privacy))
+    );
+
+    if (!searchBlogs.length) {
+      return res.status(404).json({ msg: "No blog found" });
+    }
+
+    return res.status(200).json({ blogs: searchBlogs });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
