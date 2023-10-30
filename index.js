@@ -29,17 +29,11 @@ function containPrivacyInTitle(data) {
 
 app.use("/api/blog-stats", async (req, res, next) => {
   try {
-    const response = await axios.get(url, {
-      headers: {
-        "x-hasura-admin-secret": secret,
-      },
-    });
-    // console.log(response.error);
+    const blogs = await fetchData();
 
-    if (!response.data.blogs) {
+    if (!blogs) {
       return res.status(404).json({ error: "No blog found" });
     }
-    const { blogs } = response.data;
 
     // // Calculate the total number of blogs fetched
     const totalBlogs = _.size(blogs);
