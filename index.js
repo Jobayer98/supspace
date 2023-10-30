@@ -19,6 +19,13 @@ async function fetchData() {
 }
 
 // find blogs with privacy in the title
+function containPrivacyInTitle(data) {
+  const newData = data.filter((blog) =>
+    _.includes(_.toLower(blog.title), "privacy")
+  );
+
+  return _.size(newData);
+}
 
 app.use("/api/blog-stats", async (req, res, next) => {
   try {
@@ -42,7 +49,7 @@ app.use("/api/blog-stats", async (req, res, next) => {
     const longestTitleBlog = sorteBlogByTitle[sorteBlogByTitle.length - 1];
 
     //Determine the number of blogs with titles containing the word "privacy."
-    const numberOfBlog = containPrivacyInTitle(blogs).length;
+    const numberOfBlog = containPrivacyInTitle(blogs);
 
     //Create an array of unique blog titles (no duplicates)
     const uniqueArray = _.unionBy(blogs, "title");
