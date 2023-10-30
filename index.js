@@ -9,6 +9,15 @@ const PORT = process.env.PORT || 9000;
 const uri = process.env.URI;
 const secret = process.env.SECRET;
 
+async function fetchData() {
+  const response = await axios.get(uri, {
+    headers: {
+      "x-hasura-admin-secret": secret,
+    },
+  });
+  return response.data.blogs;
+}
+
 // find blogs with privacy in the title
 
 app.use("/api/blog-stats", async (req, res, next) => {
