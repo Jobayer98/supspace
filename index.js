@@ -89,4 +89,13 @@ app.use("/api/blog-search", async (req, res, next) => {
   }
 });
 
+// global error handler
+app.use((error, req, res, next) => {
+  if (error) {
+    const status = error?.response?.status || 500;
+    res.status(status).json({ error: error.message });
+  }
+  next();
+});
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
